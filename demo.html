@@ -1,0 +1,421 @@
+<html>
+	<head>
+		<script src="js/jquery-1.3.2.js"> </script>
+		<script src="js/tokeninput.js"> </script>
+		<script src="js/filters.js"> </script>
+		<script src="js/demo/projects.js"> </script>
+		<script src="js/demo/tags.js"> </script>
+		<script src="js/demo/email.js"> </script>
+		
+		<link rel="stylesheet" type="text/css" href="styles/default/style.css"/>
+		<style type="text/css">
+			body{
+				margin: 10px; 
+				font-size: 12px; 
+				font-family: arial; 
+			}
+			
+			div.opt-name{
+				clear: left; 
+				margin-top: 20px; 
+				float: left; 
+				width: 120px; 
+				font-weight: bold; 
+			}
+			
+			div.opt-name:after{
+				content: ":"; 
+			}
+			
+			div.opt-help{
+				margin-top: 20px; 
+				float: left; 
+				width: 600px; 
+				padding-bottom: 20px; 
+				border-bottom: 1px dotted black; 
+			}
+			
+			code{
+				display: block; 
+				white-space: pre; 
+				border: 1px solid #aaaaca;
+				background-color: #f5f5ff;
+				margin: 5px 0px 5px 0px;
+				padding: 5px; 
+			}
+
+			.options{
+				border: 1px solid #aaaaaa;
+				background-color: #f5f5f5;
+				margin: 5px 0px 5px 50px;
+				padding: 5px; 
+				float: left; 
+				word-wrap:break-word; 
+				max-width: 40%; 
+				overflow-x: auto; 
+			}
+			
+			.tokeninput input{
+				width: 100%; 
+				border: 1px inset #555; 
+			}
+			
+		</style>
+		<script>
+			function toggleMarkers( checkbox ){
+				if( checkbox.checked ){
+					$('a.insertMarker').css('border', '1px solid red');
+					$('a.positionMarker').css('border', '1px solid green');
+				}
+				else{
+					$('a.insertMarker').css('border', '0px solid red');
+					$('a.positionMarker').css('border', '0px solid green');
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<h1>Token Input</h1>
+		<h2>Demo</h2>
+		<form>
+			Before getting started with the reference, consider these three 
+			examples of how the token input field can be used: 
+			<br /><br />
+			
+			<div style="float: left; width: 50%; ">
+				<h3>Tokeninput with autocomplete: <small><a href="#" onclick="$('#projects-code').toggle('normal'); return false;">source</a> </small></h3>
+				<input type="hidden" id="projects" />
+				<code style="display: none;" id="projects-code"><font color="#444444">// Generate a bunch of random sample projects</font>
+<strong>var</strong> projects <font color="4444FF">=</font> []<font color="4444FF">;</font> 
+<strong>for</strong>( <strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">1000</font><font color="4444FF">;</font> i++ )<font color="4444FF"><strong>{</strong></font>
+  projects[projects.<font color="#2040a0"><strong>length</strong></font>] <font color="4444FF">=</font> <font color="4444FF"><strong>{</strong></font>
+    id: i, 
+    <font color="#2040a0"><strong>name</strong></font>: (<font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>random</strong></font>() <font color="4444FF">&gt;</font> .<font color="#FF0000">5</font>? <font color="#008000">&quot;Air &quot;</font>: <font color="#008000">&quot;jQuery &quot;</font>) + 
+          (<font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>random</strong></font>() <font color="4444FF">&gt;</font> .<font color="#FF0000">5</font>? <font color="#008000">&quot;Plugin &quot;</font> : <font color="#008000">&quot;Service &quot;</font> ) + 
+          (<font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>random</strong></font>() <font color="4444FF">&gt;</font> .<font color="#FF0000">5</font>? <font color="#008000">&quot;Generator &quot;</font> : <font color="#008000">&quot;Extension &quot;</font> ) + 
+          (<font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>random</strong></font>() <font color="4444FF">&gt;</font> .<font color="#FF0000">5</font>? <font color="#008000">&quot;Beta &quot;</font> : <font color="#008000">&quot;Manager &quot;</font> ), 
+    date: <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>round</strong></font>( <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>random</strong></font>()*<font color="#FF0000">25</font>+<font color="#FF0000">1</font> ) + <font color="#008000">&quot;.&quot;</font> + 
+          <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>round</strong></font>( <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>random</strong></font>()*<font color="#FF0000">11</font>+<font color="#FF0000">1</font> ) + <font color="#008000">&quot;.&quot;</font> + 
+          <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>round</strong></font>( <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>random</strong></font>()*<font color="#FF0000">20</font>+<font color="#FF0000">1995</font> )
+  <font color="4444FF"><strong>}</strong></font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">// Initialize the tokeninput when the document finished loading</font>
+$(<font color="#2040a0"><strong>document</strong></font>).ready( function()<font color="4444FF"><strong>{</strong></font>
+  $( <font color="#008000">&quot;#projects&quot;</font> ).tokeninput( <font color="4444FF"><strong>{</strong></font> 
+    columns: [
+      <font color="4444FF"><strong>{</strong></font> field: <font color="#008000">&quot;name&quot;</font>, caption: <font color="#008000">&quot;Projekt&quot;</font>, <font color="#2040a0"><strong>width</strong></font>: <font color="#008000">&quot;80%&quot;</font> <font color="4444FF"><strong>}</strong></font>, 
+      <font color="4444FF"><strong>{</strong></font> field: <font color="#008000">&quot;date&quot;</font>, caption: <font color="#008000">&quot;Datum&quot;</font>, <font color="#2040a0"><strong>width</strong></font>: <font color="#008000">&quot;20%&quot;</font> <font color="4444FF"><strong>}</strong></font>
+    ],
+    onInsert: function( obj )<font color="4444FF"><strong>{</strong></font>
+      <strong>return</strong> !$( <font color="#008000">&quot;#insertVeto&quot;</font> )[<font color="#FF0000">0</font>].<font color="#2040a0"><strong>checked</strong></font>
+             <font color="4444FF">|</font><font color="4444FF">|</font> <font color="a52a2a"><strong>confirm</strong></font>( <font color="#008000">&quot;Really add &quot;</font> + obj.<font color="#2040a0"><strong>name</strong></font> + <font color="#008000">&quot;?&quot;</font> )
+    <font color="4444FF"><strong>}</strong></font>, 
+    onDelete: function( obj )<font color="4444FF"><strong>{</strong></font>
+      <strong>return</strong> !$( <font color="#008000">&quot;#deleteVeto&quot;</font> )[<font color="#FF0000">0</font>].<font color="#2040a0"><strong>checked</strong></font>
+             <font color="4444FF">|</font><font color="4444FF">|</font> <font color="a52a2a"><strong>confirm</strong></font>( <font color="#008000">&quot;Really delete &quot;</font> + obj.<font color="#2040a0"><strong>name</strong></font> + <font color="#008000">&quot;?&quot;</font> )
+    <font color="4444FF"><strong>}</strong></font>, 
+    <strong>onChange</strong>: function( objects )<font color="4444FF"><strong>{</strong></font>
+      <font color="#444444">// objects contains an array of all the objects</font>
+      <font color="#444444">// however, we can also use the value of the original </font>
+      <font color="#444444">// textfield to get the selected ids</font>
+      $( <font color="#008000">&quot;#sel&quot;</font> ).<font color="#2040a0"><strong>text</strong></font>( $( <font color="#008000">&quot;#projects&quot;</font> ).val() )<font color="4444FF">;</font> 
+    <font color="4444FF"><strong>}</strong></font>, 
+    
+    autocomplete: function( <font color="#2040a0"><strong>text</strong></font>, tokeninput )<font color="4444FF"><strong>{</strong></font>
+      <strong>if</strong>( <font color="#2040a0"><strong>text</strong></font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#008000">&quot;&quot;</font> )<font color="4444FF"><strong>{</strong></font>
+        <strong>var</strong> obj <font color="4444FF">=</font> []<font color="4444FF">;</font> 
+        <strong>for</strong>( <strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">5</font><font color="4444FF">;</font> i++ )<font color="4444FF"><strong>{</strong></font>
+          obj[i] <font color="4444FF">=</font> projects[i]<font color="4444FF">;</font> 
+        <font color="4444FF"><strong>}</strong></font>
+        tokeninput.result( obj )<font color="4444FF">;</font>
+      <font color="4444FF"><strong>}</strong></font>
+      <strong>else</strong><font color="4444FF"><strong>{</strong></font>
+        <strong>var</strong> obj <font color="4444FF">=</font> []<font color="4444FF">;</font> 
+        <strong>for</strong>( <strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> projects.<font color="#2040a0"><strong>length</strong></font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> obj.<font color="#2040a0"><strong>length</strong></font> <font color="4444FF">&lt;</font> <font color="#FF0000">100</font><font color="4444FF">;</font> i++ )<font color="4444FF"><strong>{</strong></font>
+          <font color="#444444">// combine a few search filters</font>
+          <strong>if</strong>( Filters.contains( <font color="#2040a0"><strong>text</strong></font>, projects[i], [ <font color="#008000">&quot;name&quot;</font>, <font color="#008000">&quot;date&quot;</font>] ) <font color="4444FF">|</font><font color="4444FF">|</font> 
+            Filters.expand( <font color="#2040a0"><strong>text</strong></font>, projects[i], [ <font color="#008000">&quot;name&quot;</font> ] ) )<font color="4444FF"><strong>{</strong></font>
+            
+            obj[obj.<font color="#2040a0"><strong>length</strong></font>] <font color="4444FF">=</font> projects[i]<font color="4444FF">;</font> 
+          <font color="4444FF"><strong>}</strong></font>
+        <font color="4444FF"><strong>}</strong></font>
+        
+        tokeninput.result( obj )<font color="4444FF">;</font>
+      <font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>,
+    
+    tokenText: function( obj )<font color="4444FF"><strong>{</strong></font>
+      <strong>return</strong> obj.<font color="#2040a0"><strong>name</strong></font><font color="4444FF">;</font> 
+    <font color="4444FF"><strong>}</strong></font>
+  <font color="4444FF"><strong>}</strong></font> )<font color="4444FF">;</font> 
+<font color="4444FF"><strong>}</strong></font> )<font color="4444FF">;</font> </code>
+				<br /><br />
+				
+				<h3>Free tag input: <small><a href="#" onclick="$('#tags-code').toggle('normal');return false;">source</a></small></h3>
+				<input type="hidden" id="tags" />
+				<code style="display: none;" id="tags-code">$(<font color="#2040a0"><strong>document</strong></font>).ready( function()<font color="4444FF"><strong>{</strong></font>
+  $( <font color="#008000">&quot;#tags&quot;</font> ).tokeninput( <font color="4444FF"><strong>{</strong></font> 
+    onCreate: function( str, tokeninput )<font color="4444FF"><strong>{</strong></font>
+      <strong>var</strong> tokens <font color="4444FF">=</font> str.<font color="a52a2a"><strong>split</strong></font>( <font color="#008000">&quot;,&quot;</font> )<font color="4444FF">;</font> 
+      <strong>for</strong>( <strong>var</strong> i <strong>in</strong> tokens )<font color="4444FF"><strong>{</strong></font>
+        tokeninput.insert( <font color="4444FF"><strong>{</strong></font> id: tokens[i].<font color="a52a2a"><strong>replace</strong></font>( <font color="4444FF">/</font>^\s*(.*?)\s*$<font color="4444FF">/</font>, <font color="#008000">&quot;$1&quot;</font> ) <font color="4444FF"><strong>}</strong></font> )<font color="4444FF">;</font> 
+      <font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>, 
+    onInsert: function( obj )<font color="4444FF"><strong>{</strong></font>
+      <strong>return</strong> !$( <font color="#008000">&quot;#insertVeto&quot;</font> )[<font color="#FF0000">0</font>].<font color="#2040a0"><strong>checked</strong></font>
+             <font color="4444FF">|</font><font color="4444FF">|</font> <font color="a52a2a"><strong>confirm</strong></font>( <font color="#008000">&quot;Really add &quot;</font> + obj.id + <font color="#008000">&quot;?&quot;</font> )
+    <font color="4444FF"><strong>}</strong></font>,
+    onDelete: function( obj )<font color="4444FF"><strong>{</strong></font>
+      <strong>return</strong> !$( <font color="#008000">&quot;#deleteVeto&quot;</font> )[<font color="#FF0000">0</font>].<font color="#2040a0"><strong>checked</strong></font>
+             <font color="4444FF">|</font><font color="4444FF">|</font> <font color="a52a2a"><strong>confirm</strong></font>( <font color="#008000">&quot;Really delete &quot;</font> + obj.id + <font color="#008000">&quot;?&quot;</font> )
+    <font color="4444FF"><strong>}</strong></font>, 
+    <strong>onChange</strong>: function( objects )<font color="4444FF"><strong>{</strong></font>
+      <font color="#444444">// objects contains an array of all the objects</font>
+      <font color="#444444">// however, we can also use the value of the original </font>
+      <font color="#444444">// textfield to get the selected ids</font>
+      $( <font color="#008000">&quot;#sel2&quot;</font> ).<font color="#2040a0"><strong>text</strong></font>( $( <font color="#008000">&quot;#tags&quot;</font> ).val() )<font color="4444FF">;</font> 
+    <font color="4444FF"><strong>}</strong></font>
+  <font color="4444FF"><strong>}</strong></font> )<font color="4444FF">;</font> 
+<font color="4444FF"><strong>}</strong></font> )<font color="4444FF">;</font></code>
+				<br /><br />
+				
+				<h3>Email Input <small><a href="#" onclick="$('#email-code').toggle('normal');return false;">source</a></small></h3>
+				(non-validating, backed by php, creates new ids on demand<br /> when unknown addresses are inserted): <br />
+				<input type="hidden" id="email" />
+				<code style="display: none;" id="email-code">$(<font color="#2040a0"><strong>document</strong></font>).ready( function()<font color="4444FF"><strong>{</strong></font>
+  $( <font color="#008000">&quot;#email&quot;</font> ).tokeninput( <font color="4444FF"><strong>{</strong></font> 
+    duplicates: false, 
+    columns: [
+      <font color="4444FF"><strong>{</strong></font> field: <font color="#008000">&quot;email&quot;</font>, caption: <font color="#008000">&quot;EMail-Address&quot;</font>, <font color="#2040a0"><strong>width</strong></font>: <font color="#008000">&quot;100%&quot;</font> <font color="4444FF"><strong>}</strong></font>
+    ],
+    autocomplete: function( str, tokeninput )<font color="4444FF"><strong>{</strong></font>
+      $.getJSON( <font color="#008000">&quot;email.php?q=&quot;</font> + str, function( data )<font color="4444FF"><strong>{</strong></font>
+        tokeninput.result( data )<font color="4444FF">;</font> 
+      <font color="4444FF"><strong>}</strong></font> )<font color="4444FF">;</font> 
+    <font color="4444FF"><strong>}</strong></font>, 
+    onCreate: function( str, input )<font color="4444FF"><strong>{</strong></font>
+      $.getJSON( <font color="#008000">&quot;email.php?i=&quot;</font> + str, function( data )<font color="4444FF"><strong>{</strong></font>
+        <strong>for</strong>( <strong>var</strong> i <strong>in</strong> data )<font color="4444FF"><strong>{</strong></font>
+          input.insert( data[i] )<font color="4444FF">;</font> 
+        <font color="4444FF"><strong>}</strong></font>
+      <font color="4444FF"><strong>}</strong></font> )<font color="4444FF">;</font> 
+    <font color="4444FF"><strong>}</strong></font>,
+    onInsert: function( obj )<font color="4444FF"><strong>{</strong></font>
+      <strong>return</strong> !$( <font color="#008000">&quot;#insertVeto&quot;</font> )[<font color="#FF0000">0</font>].<font color="#2040a0"><strong>checked</strong></font>
+             <font color="4444FF">|</font><font color="4444FF">|</font> <font color="a52a2a"><strong>confirm</strong></font>( <font color="#008000">&quot;Really add &quot;</font> + obj.tag + <font color="#008000">&quot;?&quot;</font> )<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>,
+    onDelete: function( obj )<font color="4444FF"><strong>{</strong></font>
+      <strong>return</strong> !$( <font color="#008000">&quot;#deleteVeto&quot;</font> )[<font color="#FF0000">0</font>].<font color="#2040a0"><strong>checked</strong></font>
+             <font color="4444FF">|</font><font color="4444FF">|</font> <font color="a52a2a"><strong>confirm</strong></font>( <font color="#008000">&quot;Really delete&quot;</font> + obj.tag + <font color="#008000">&quot;?&quot;</font> )
+    <font color="4444FF"><strong>}</strong></font>, 
+    
+    <strong>onChange</strong>: function( objects )<font color="4444FF"><strong>{</strong></font>
+      <font color="#444444">// objects contains an array of all the objects</font>
+      <font color="#444444">// however, we can also use the value of the original </font>
+      <font color="#444444">// textfield to get the selected ids</font>
+      $( <font color="#008000">&quot;#sel3&quot;</font> ).<font color="#2040a0"><strong>text</strong></font>( $( <font color="#008000">&quot;#email&quot;</font> ).val() )<font color="4444FF">;</font> 
+    <font color="4444FF"><strong>}</strong></font>,
+    tokenText: function( obj )<font color="4444FF"><strong>{</strong></font>
+      <strong>return</strong> obj.email<font color="4444FF">;</font> 
+    <font color="4444FF"><strong>}</strong></font>
+  <font color="4444FF"><strong>}</strong></font> )<font color="4444FF">;</font> 
+<font color="4444FF"><strong>}</strong></font> )<font color="4444FF">;</font></code>
+			</div>
+			<div class="options">
+				<input type="checkbox" name="m" id="markers" onchange="toggleMarkers(this);" />
+				<label for="markers">Show Markers</label>
+				<br />
+				<input type="checkbox" name="iv" id="insertVeto"/>
+				<label for="insertVeto">Use insert veto</label>
+				<br />
+				<input type="checkbox" name="dv" id="deleteVeto"/>
+				<label for="deleteVeto">Use delete veto</label>
+				<br />
+				<br />
+				Projects: <br />
+				<small id="sel">-</small>
+				<br /><br />
+				Free input tags: <br />
+				<small id="sel2">-</small>
+				<br /><br />
+				Combined tags/free input: <br />
+				<small id="sel3">-</small>
+			</div>
+			<br clear="all" />
+		</form>
+		
+		<h2>Getting Started</h2>
+		There are many other (and maybe simpler) implementations of tokeninputs 
+		out there, consider <a href="http://loopj.com/2009/04/25/jquery-plugin-tokenizing-autocomplete-text-entry/" target="_blank">James Smith'</a> or <a href="http://tenthousandlinesofcode.com/?p=7" target="_blank">Jeff's</a> versions. 
+		However, they were both designed to mimic facebook's <i>message recepients</i> field rather than generalizing
+		the concept a bit further. 
+		
+		<br />
+		<h3>Features: </h3>
+		<ul>
+			<li>Have callback functions (vetos) for inserting and deleting elements. </li>
+			<li>Autocomplete and free input don't have to be mutually exclusive, they can be mixed (e.g. for an email input field, where some of your friends are in your address book, but others just aren't)</li>
+			<li>Not dependent on AJAX, also works in pure Javascript mode (e.g. for AIR applications)</li>
+		</ul>
+		
+		
+		<h3>Step 1: Define your datastructure: </h3>
+		The first step is to think about the datastructure used for each token, something like this: 
+<code>// The simple case: 
+{ id: <i>id</i>, text: <i>text</i> }
+
+// A more complex case: 
+{ id: <i>id</i>, text: <i>text</i>, description: <i>text</i>, date: <i>creation-date</i>, ... }</code>
+
+		<h2>Reference</h2>
+		<h3>tokeninput( options )</h3>
+		Turns all the matching elements into token inputs. 
+		
+		<h4>Options: </h4>
+		<div class="opt-name">columns</div>
+		<div class="opt-help">
+			(optional) The table header descriptions if autocomplete used. 
+			<br />
+			No table headings are used by default. 
+			
+<code>columns: [
+  { field: "id", caption: "Id", width: "10%" }, 
+  { field: "tag", caption: "Tag", width: "90%" }
+]</code>
+		</div>
+		
+		<div class="opt-name">onChange</div>
+		<div class="opt-help">
+			(optional) A callback function for the onchange event. 
+			<br />
+			Does nothing by default.
+			
+<code>onChange: function( objects ){
+  for( var i in objects ){
+    console.log( "object " + i + ": " ); 
+    for( var property in objects[i] ){
+      console.log( "- " + property + "=" + objects[i][property] ); 
+    }
+  }
+}</code>
+			
+		</div>
+		
+		<div class="opt-name">onDelete</div>
+		<div class="opt-help">
+			(optional) A callback function that is called before an item is deleted. 
+			If the function returns true the item will be deleted, if it returns
+			false the item will remain in the list. <br />
+			Always returns true by default. 
+			<br /><br />
+			Optionally you can add a second parameter which will then be a 
+			reference to the tokeninput object. 
+			
+			
+<code>onDelete: function( obj ){
+  return window.confirm( "Are you sure you want to delete?" ); 
+}</code>
+			
+		</div>
+		
+		<div class="opt-name">onInsert</div>
+		<div class="opt-help">
+			(optional) A callback function that is called before an item is inserted. 
+			If the function returns true the item will be inserted, if it returns
+			false the item will not be added to the list. <br />
+			Always returns true by default. 
+			<br /><br />
+			Optionally you can add a second parameter which will then be a 
+			reference to the tokeninput object. 
+			
+<code>onInsert: function( obj ){
+  return window.confirm( "Really insert?" ); 
+}</code>
+			
+		</div>
+		
+		<div class="opt-name">onFull</div>
+		<div class="opt-help">
+			(optional) A callback function that is called when the maximum number
+			of tokens was already inserted. By default this function does nothing. 
+			<br />
+			This callback only makes sense if you provide the maxItems options (see below).  
+			<br /><br />
+			Optionally you can add a second parameter which will then be a 
+			reference to the tokeninput object. 
+			
+<code>onFull: function( obj ){
+  alert( "You have already reached the maximum number of tokens" ); 
+}</code>
+		</div>
+		
+		<div class="opt-name">tokenText</div>
+		<div class="opt-help">
+			(optional) A callback function that returns the text that will be 
+			used for the token. <br />
+			By default this returns obj.id. 
+			<br /><br />
+			Optionally you can add a second parameter which will then be a 
+			reference to the tokeninput object. 
+			
+			
+<code>tokenText: function( obj ){
+  return obj.name; // assume your tokens have a "name" field
+}</code>
+			
+		</div>
+		
+		<div class="opt-name">onCreate</div>
+		<div class="opt-help">
+			(optional) A callback function used for creating new token objects
+			when free input is enabled. 
+			<br />
+			By default this is null, so creating new token objects (not from the autocomplete list) 
+			is disabled. 
+			<br />
+			Note the second parameter, a reference to tokeninput, which saves 
+			you some javascript OOP-mess. 
+			
+<code>onCreate: function( str, tokeninput ){
+  // create a random id, store the user-input in the 
+  // name property
+  return { id: Math.random(), name: str }; 
+}</code>
+			
+		</div>
+		
+		<div class="opt-name">autocomplete</div>
+		<div class="opt-help">
+			(optional) A callback function used for autocompletion. It is designed
+			to work in an asynchroneous fashion, so one can load suggestions with AJAX. 
+			<br />
+			Alternatively (and by default) this value can be set to null, which 
+			will disable the autocomplete functionality. 
+			<br />
+			Note the second parameter, a reference to tokeninput, which saves 
+			you some javascript OOP-mess. 
+			<br />
+			If you want to use autocomplete <b>you need to provide the columns
+			option as well.</b>
+<code>autocomplete: function( str, tokeninput ){
+  $.getJSON( "/autocomplete?query=" + str, function( data ){
+    tokeninput.result( data ); 
+  } ); 
+}</code>	
+		</div>
+
+		<div class="opt-name">maxTokens</div>
+		<div class="opt-help">(optional) maximum number of tokens, 0 means no limit. Defaults to 0. </div>
+		
+		<div class="opt-name">duplicates</div>
+		<div class="opt-help">(optional) Allows the same token to be added to the list multiple times. Defaults to false. </div>
+
+		<div class="opt-name">containerClass</div>
+		<div class="opt-help">(optional) CSS class for the container of the token input. Defaults to tokeninput. </div>
+
+		<br clear="all" />
+		<br clear="all" />
+		<br clear="all" />
+	</body>
+</html>

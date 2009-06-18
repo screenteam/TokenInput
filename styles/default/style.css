@@ -1,0 +1,101 @@
+.tokeninput{
+	position: relative; 
+}
+
+/* The autocomplete popup (which is a table!) */
+.autocomplete{
+	border: 1px solid black; 
+	border-top: 1px dotted black; 
+	position: absolute; 
+	background-color: white; 
+	left: 0px;
+	display: none; 
+	z-index: 10000;
+	width: 50%; 
+	border-spacing: 0px; 
+}
+
+/* Headers */
+.autocomplete th{
+	text-align: left; 
+	background-color: #eee;
+	border-bottom: 1px solid #555;
+}
+
+/* Scrollable body */
+.autocomplete tbody{
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+/* Rows in the autocomplete popup */
+.autocomplete tbody tr{
+	font-size: 11px; 
+	cursor: pointer; 
+}
+
+/* Autocomplete entries that are selected with the keyboard */
+/* or hovered with the mouse */
+.autocomplete .hover{
+	background-color: yellow; 
+}
+
+/* The textfield */
+.tokeninput input{
+	height: 100%; 
+}
+
+.autocomplete .invalid{
+	text-decoration: line-through; 
+	opacity: 0.5; 
+}
+
+
+/* Tokens */
+.tokeninput .token{
+	margin-right: 5px;
+	white-space:nowrap;
+	line-height: 25px; 
+	font-size: 10px; 
+}
+
+.tokeninput .token a.before{
+	background-image: url( token_left.png ); 
+	padding: 3px 5px 4px 0px; 
+}
+
+.tokeninput .token a.center{
+	background-image: url( token_center.png ); 
+	padding: 3px 0px 4px 0px; 
+}
+
+.tokeninput .token a.after{
+	background-image: url( token_right.png ); 
+	padding: 3px 15px 4px 0px; 
+}
+
+.tokeninput span.token:hover{
+	cursor: pointer; 
+	color: white; 
+}
+
+.tokeninput span.token:hover a.before{
+	background-image: url( token_hover_left.png ); 
+}
+
+.tokeninput span.token:hover a.center{
+	background-image: url( token_hover_center.png ); 
+}
+
+.tokeninput span.token:hover a.after{
+	background-image: url( token_hover_right.png ); 
+}
+
+
+// MAKE SURE you set the same line-height here 
+// than for ".tokeninput .token"
+// and the same padding as in ".tokeninput .token a.center"
+.marker{
+	padding: 3px 0px 4px 0px; 
+	line-height: 25px; 
+}
+

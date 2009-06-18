@@ -1,0 +1,55 @@
+<project name="Token Input" default="all">
+	<property name="version" value="1.0" />
+	
+	<target name="all" depends="merge, release">
+	</target>
+	
+	<target name="merge">
+		<!-- load source files -->
+		<exec executable="tools/code2html/code2html" outputproperty="projects.js" failonerror="true">
+			<arg line="--no-header --language-mode javascript" />
+			<redirector input="js/demo/projects.js">
+				<inputfilterchain>
+					<tabstospaces tablength="2"/>
+				</inputfilterchain>
+			</redirector>
+		</exec>
+
+		<exec executable="tools/code2html/code2html" outputproperty="tags.js" failonerror="true">
+			<arg line="--no-header --language-mode javascript" />
+			<redirector input="js/demo/tags.js">
+				<inputfilterchain>
+					<tabstospaces tablength="2"/>
+				</inputfilterchain>
+			</redirector>
+		</exec>
+
+		<exec executable="tools/code2html/code2html" outputproperty="email.js" failonerror="true">
+			<arg line="--no-header --language-mode javascript" />
+			<redirector input="js/demo/email.js">
+				<inputfilterchain>
+					<tabstospaces tablength="2"/>
+				</inputfilterchain>
+			</redirector>
+		</exec>
+
+		<delete file="demo.html" />
+		<copy file="demo-src.html" tofile="demo.html">
+			<filterchain>
+				<!-- replaces ${<filename>.js} in demo-src.html 
+				     by the formatted source code of <filename>.js -->
+				<expandproperties/>
+			</filterchain>
+		</copy>
+	</target>
+	
+	
+	<target name="release">
+		<mkdir dir="release" />
+		<copy file="js/tokeninput.js" tofile="release/tokeninput-${version}.dev.js" />
+		<copy file="js/filters.js" tofile="release/filters-${version}.dev.js" />
+		<java jar="tools/yuicompressor/yuicompressor-2.4.2.jar" fork="true" failonerror="true">
+			<arg line="-o release/filters-${version}.pack.js js/filters.js" />
+		</java>
+	</target>
+</project>
